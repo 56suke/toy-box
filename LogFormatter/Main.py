@@ -14,6 +14,7 @@ import os
 #--- 自作モジュールのインポート ---#
 import ReadWriteFile
 import EditExcelFile
+import DataOperate
 
 #--- 変数宣言 ---#
 curScript = sys.argv[0]
@@ -48,7 +49,6 @@ def main():
 
     #--- 入力ファイル名称取得 ---#
     fileName = os.path.splitext(os.path.basename(inputFile))[0]
-
     #--- 出力ファイル名称設定 ---#
     outputExcelFile = fileName + '.xlsx'
     outputExcelFile = os.path.join(exeFileDir, outputExcelFile)
@@ -56,9 +56,11 @@ def main():
     #--- ファイル読込 ---#
     rowData = ReadWriteFile.ReadTxtFile(inputFile)
     #--- 前処理 ---#
-    EditData = rowData.strip().split('\n')
+    editData = rowData.strip().split('\n')
+    #--- 時系列にソート ---#
+    sortData = DataOperate.SortDateData(editData)
     #--- ファイル出力 ---#
-    ReadWriteFile.WriteTabSprDataToExcelFile(EditData, outputExcelFile)
+    ReadWriteFile.WriteTabSprDataToExcelFile(sortData, outputExcelFile)
 
 
     #=== Excel編集ブロック ===#
