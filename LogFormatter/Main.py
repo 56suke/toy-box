@@ -23,7 +23,7 @@ curScript = sys.argv[0]
 inputFile = "input.txt"
 
 # ヘッダ文字列定数
-HEADER_STR_LIST = ['# Date', 'Time', 'Data1', 'Data2', 'Data3', 'Data4', 'Data5']
+HEADER_STR_LIST = ['# Date', 'Time', 'Data1', 'Data2', 'Color', 'Direction', 'Value']
 
 #--- 実行ファイルパスを取得 ---#
 def GetExeFilePath():
@@ -76,6 +76,8 @@ def main():
     EditExcelFile.ApplyFilter(outputExcelFile, 1, 10)
     #--- ウィンドウ枠の固定 ---#
     EditExcelFile.UseFreezePanes(outputExcelFile, "A2")
+    #--- カラムの値に応じて行のセルの色を設定 ---#
+    EditExcelFile.SetRowColors(outputExcelFile, 4, 10)
 
 
 if __name__ == "__main__":
