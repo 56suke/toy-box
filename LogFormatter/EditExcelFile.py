@@ -9,11 +9,25 @@
 
 #--- モジュールのインポート ---#
 import sys
-import openpyxl
+from openpyxl import load_workbook, utils, styles
+
 
 #--- 変数宣言 ---#
 curScript = sys.argv[0]
 ROW_HEIGHT_RATIO = 1.3
+
+
+#--- 入力Excelファイル開き、アクティブなシートを取得するメソッド ---#
+# inputFile:入力'.xlsxファイル'(.xlsxまでのパス)
+def OpenExcelFile(inputFile):
+    #--- 変数宣言 ---#
+
+    # Excelファイルを開く
+    wb = load_workbook(inputFile)
+    # アクティブなシートを取得する
+    ws = wb.active
+
+    return wb, ws
 
 
 #--- セルの列幅の自動調整 ---#
@@ -21,15 +35,12 @@ ROW_HEIGHT_RATIO = 1.3
 def AdjustColWidth(inputFile):
     #--- 変数宣言 ---#
 
-    # Excelファイルを開く
-    wb = openpyxl.load_workbook(inputFile)
-    # アクティブなシートを取得する
-    ws = wb.active
+    wb, ws = OpenExcelFile(inputFile)
 
     # セルの幅を自動調整
     for column in ws.columns:
         max_length = 0
-        column_letter = openpyxl.utils.get_column_letter(column[0].column)
+        column_letter = utils.get_column_letter(column[0].column)
         for cell in column:
             try:
                 if len(str(cell.value)) > max_length:
@@ -49,10 +60,7 @@ def AdjustColWidth(inputFile):
 def SetRowHeight(inputFile, hVal):
     #--- 変数宣言 ---#
 
-    # Excelファイルを開く
-    wb = openpyxl.load_workbook(inputFile)
-    # アクティブなシートを取得する
-    ws = wb.active
+    wb, ws = OpenExcelFile(inputFile)
 
     # 行高を設定
     for row in ws.iter_rows():
@@ -68,15 +76,12 @@ def SetRowHeight(inputFile, hVal):
 def SetDesignedFont(inputFile, fontType):
     #--- 変数宣言 ---#
 
-    # Excelファイルを開く
-    wb = openpyxl.load_workbook(inputFile)
-    # アクティブなシートを取得する
-    ws = wb.active
+    wb, ws = OpenExcelFile(inputFile)
 
     # 全ての行高を設定
     for row in ws.iter_rows():
         for cell in row:
-            cell.font = openpyxl.styles.Font(name=fontType) # フォントを設定
+            cell.font = styles.Font(name=fontType) # フォントを設定
 
     # Excelファイルを保存
     wb.save(inputFile)
@@ -88,10 +93,7 @@ def SetDesignedFont(inputFile, fontType):
 def InsertHeader(inputFile, headStrList):
     #--- 変数宣言 ---#
 
-    # Excelファイルを開く
-    wb = openpyxl.load_workbook(inputFile)
-    # アクティブなシートを取得する
-    ws = wb.active
+    wb, ws = OpenExcelFile(inputFile)
 
     # ヘッダを挿入
     ws.insert_rows(1)
@@ -109,14 +111,11 @@ def InsertHeader(inputFile, headStrList):
 def ApplyFilter(inputFile, colS, colE):
     #--- 変数宣言 ---#
 
-    # Excelファイルを開く
-    wb = openpyxl.load_workbook(inputFile)
-    # アクティブなシートを取得する
-    ws = wb.active
+    wb, ws = OpenExcelFile(inputFile)
 
     # フィルタをかける対象の列を指定
-    colSLetter = openpyxl.utils.get_column_letter(colS)
-    colELetter = openpyxl.utils.get_column_letter(colE)
+    colSLetter = utils.get_column_letter(colS)
+    colELetter = utils.get_column_letter(colE)
 
     # フィルタをかける範囲を指定
     filterRange = f"{colSLetter}:{colELetter}"
@@ -135,10 +134,7 @@ def ApplyFilter(inputFile, colS, colE):
 def UseFreezePanes(inputFile, areaVal):
     #--- 変数宣言 ---#
 
-    # Excelファイルを開く
-    wb = openpyxl.load_workbook(inputFile)
-    # アクティブなシートを取得する
-    ws = wb.active
+    wb, ws = OpenExcelFile(inputFile)
 
     # 引数の値の位置でウィンドウ枠を固定
     ws.freeze_panes = areaVal
@@ -146,6 +142,41 @@ def UseFreezePanes(inputFile, areaVal):
     # Excelファイルを保存
     wb.save(inputFile)
 
+
+#--- Excelファイルのカラムの値に対して行のセルの色を設定するメソッド ---#
+# <Parameters>
+# inputFile (str)           : 入力'.xlsxファイル'(.xlsxまでのパス)
+# colorColumnIndex (int)    : 色情報の列のindex(0から始まる)
+# maxColumns (int)          : 変更する列の最大数
+# startRow (int, optional)  : 走査開始行のindex(デフォルト値:2)
+# endRow (int, optional)    : 走査終了行のindex(デフォルト値:None(最終行まで))
+#
+# <Returns>
+# None
+def SetRowColors(inputFile, colorColumnIndex, maxColumns, startRow=2, endRow=None):
+    #--- 変数宣言 ---#
+
+    # 色と対応する色コード辞書
+    colorCodeDict = {
+        "'red'": "F2DCDB", # 赤
+        "'blue'": "DDEBF7", # 青
+        "'yellow'": "FFF2CC", # 黄
+        "'green'": "E2EFDA", # 緑
+    }
+
+    wb, ws = OpenExcelFile(inputFile)
+
+    # 各行を走査して、色情報の列を読み取り、該当する色に変更する
+    for row in ws.iter_rows(min_row=startRow, max_row=endRow):
+        colorInfo = row[colorColumnIndex].value
+        if colorInfo in colorCodeDict:
+            colorCode = colorCodeDict[colorInfo]
+            fill = styles.PatternFill(start_color=colorCode, end_color=colorCode, fill_type="solid")
+            for cell in row[:maxColumns]:
+                cell.fill = fill
+
+    # Excelファイルを保存
+    wb.save(inputFile)
 
 #--- main関数 ---#
 def main():
