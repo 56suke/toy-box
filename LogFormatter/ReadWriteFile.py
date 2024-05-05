@@ -90,6 +90,25 @@ def WriteTabSprDataToExcelFile(data, outputFile):
     # Excelファイルを保存
     wb.save(outputFile)
 
+#=== 設定ファイル読込ブロック ===#
+#--- 色情報の設定ファイル(csv)を読み込み、辞書型の変数に値をセットし返却するメソッド ---#
+# <Parameters>
+# inputFile (str)           : 入力'.csvファイル'(.csvまでのパス)
+#
+# <Returns>
+# colorDict(dict)           : 色情報辞書型変数(色名称:色コード)
+def ReadColorInfoFile(inputFile):
+    #--- 変数宣言 ---#
+    colorDict = {}
+
+    with open(inputFile, 'r', newline='') as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            colorName = row['# ColorName']
+            colorCode = row['ColorCode']
+            colorDict[colorName] = colorCode
+
+    return colorDict
 
 #--- main関数 ---#
 def main():

@@ -22,6 +22,9 @@ curScript = sys.argv[0]
 
 inputFile = "input.txt"
 
+# 設定ファイルディレクトリ名称
+SETTING_DIR_NAME = "Settings"
+
 # ヘッダ文字列定数
 HEADER_STR_LIST = ['# Date', 'Time', 'Data1', 'Data2', 'Color', 'Direction', 'Value']
 
@@ -66,18 +69,32 @@ def main():
     #=== Excel編集ブロック ===#
     #--- ヘッダ挿入 ---#
     EditExcelFile.InsertHeader(outputExcelFile, HEADER_STR_LIST)
+
     #--- セル列幅調整 ---#
     EditExcelFile.AdjustColWidth(outputExcelFile)
+
     #--- セル行高設定 ---#
     EditExcelFile.SetRowHeight(outputExcelFile, 25)
+
     #--- フォント設定 ---#
     EditExcelFile.SetDesignedFont(outputExcelFile, "Arial")
+
     #--- フィルタ適用 ---#
     EditExcelFile.ApplyFilter(outputExcelFile, 1, 10)
+
     #--- ウィンドウ枠の固定 ---#
     EditExcelFile.UseFreezePanes(outputExcelFile, "A2")
+
     #--- カラムの値に応じて行のセルの色を設定 ---#
-    EditExcelFile.SetRowColors(outputExcelFile, 4, 10)
+    # 色情報設定ファイルパス
+    setDirPath = os.path.join(exeFileDir, SETTING_DIR_NAME)
+    colorSetFilePath = os.path.join(setDirPath, "ColorsInfo.csv")
+
+    # 色情報を設定ファイルから取得
+    colorInfo = ReadWriteFile.ReadColorInfoFile(colorSetFilePath)
+
+    # 行のセルの色を設定
+    EditExcelFile.SetRowColors(outputExcelFile, colorInfo, 4, 10)
 
 
 if __name__ == "__main__":

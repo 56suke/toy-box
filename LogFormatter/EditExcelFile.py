@@ -146,6 +146,7 @@ def UseFreezePanes(inputFile, areaVal):
 #--- Excelファイルのカラムの値に対して行のセルの色を設定するメソッド ---#
 # <Parameters>
 # inputFile (str)           : 入力'.xlsxファイル'(.xlsxまでのパス)
+# colorCodeDict(dict)       : 色情報辞書型変数(色名称:色コード)
 # colorColumnIndex (int)    : 色情報の列のindex(0から始まる)
 # maxColumns (int)          : 変更する列の最大数
 # startRow (int, optional)  : 走査開始行のindex(デフォルト値:2)
@@ -153,9 +154,10 @@ def UseFreezePanes(inputFile, areaVal):
 #
 # <Returns>
 # None
-def SetRowColors(inputFile, colorColumnIndex, maxColumns, startRow=2, endRow=None):
+def SetRowColors(inputFile, colorCodeDict ,colorColumnIndex, maxColumns, startRow=2, endRow=None):
     #--- 変数宣言 ---#
 
+    """
     # 色と対応する色コード辞書
     colorCodeDict = {
         "'red'": "F2DCDB", # 赤
@@ -163,6 +165,7 @@ def SetRowColors(inputFile, colorColumnIndex, maxColumns, startRow=2, endRow=Non
         "'yellow'": "FFF2CC", # 黄
         "'green'": "E2EFDA", # 緑
     }
+    """
 
     wb, ws = OpenExcelFile(inputFile)
 
