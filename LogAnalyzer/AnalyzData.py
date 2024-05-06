@@ -112,6 +112,47 @@ class ExcelDataProcessor:
         # ワークブックを保存する
         wb.save(outputFile)
 
+    def matchBeforeAfterAndWrite(self, inputFile):
+        wb = load_workbook(inputFile)
+        ws = wb.active
+
+        # ヘッダーを追加するために、既存のヘッダーを拡張
+        if ws.cell(row=1, column=9).value is None:
+            ws.cell(row=1, column=9).value = 'MatchIndex'
+
+        beforeDataDict = {}
+        afterDataCandidates = {}
+
+        for idx, row in enumerate(ws.iter_rows(min_row=2, values_only=True), start=2):
+            if len(row) < 7:
+                print(f"Error: Row {idx} has insufficient columns.")
+                continue
+
+            direction = row[5]  # 6番目の列が方向
+            value = row[6]  # 7番目の列が値
+
+            if direction == "'before'":
+                if value not in beforeDataDict:
+                    beforeDataDict[value] = idx
+                ws.cell(row=idx, column=9).value = '-'
+
+            elif direction == "'after'":
+                if value not in afterDataCandidates:
+                    afterDataCandidates[value] = []
+                afterDataCandidates[value].append(idx)
+                ws.cell(row=idx, column=9).value = '-'
+
+        for value, before_index in beforeDataDict.items():
+            if value in afterDataCandidates and afterDataCandidates[value]:
+                after_index = afterDataCandidates[value].pop(0)
+                ws.cell(row=before_index, column=9).value = after_index
+                ws.cell(row=after_index, column=9).value = before_index
+
+        for value, indices in afterDataCandidates.items():
+            for idx in indices:
+                ws.cell(row=idx, column=9).value = '-'
+
+        wb.save("EditFile.xlsx")
 
 #--- main関数 ---#
 def main():
@@ -129,6 +170,8 @@ def main():
     """
 
     processor.WriteDataPairsToExcelFile("output.xlsx")
+
+    processor.matchBeforeAfterAndWrite("input.xlsx")
 
 if __name__ == "__main__":
     main()
