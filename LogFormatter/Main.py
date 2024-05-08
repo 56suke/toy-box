@@ -79,6 +79,12 @@ def main():
     #--- フォント設定 ---#
     FormatExcelFile.SetDesignedFont(outputExcelFile, "Arial")
 
+    #--- ヘッダ行の文字を太字に設定する ---#
+    FormatExcelFile.SetHeaderFontBold(outputExcelFile)
+
+    #--- ヘッダ行文字列を上下中央揃えに設定する ---#
+    FormatExcelFile.SetHeaderAlignment(outputExcelFile)
+
     #--- フィルタ適用 ---#
     FormatExcelFile.ApplyFilter(outputExcelFile, 1, 10)
 

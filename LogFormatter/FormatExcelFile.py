@@ -104,6 +104,37 @@ def InsertHeader(inputFile, headStrList):
     wb.save(inputFile)
 
 
+#--- ヘッダ行の文字を太字に設定する ---#
+# inputFile:入力'*.xlsxファイル'(*.xlsxまでのパス)
+def SetHeaderFontBold(inputFile):
+    wb, ws = OpenExcelFile(inputFile)
+
+    # ヘッダー行のセルのフォントを一時的に保存する
+    font_cache = {}
+    for cell in ws[1]:
+        font_cache[cell.coordinate] = styles.Font(name=cell.font.name, size=cell.font.size)
+
+    # ヘッダー行の文字を太字にする
+    for cell in ws[1]:
+        cell.font = styles.Font(bold=True, name=font_cache[cell.coordinate].name, size=font_cache[cell.coordinate].size)
+
+    # Excelファイルを保存
+    wb.save(inputFile)
+
+
+#--- ヘッダ行文字列を上下中央揃えに設定する ---#
+# inputFile:入力'*.xlsxファイル'(*.xlsxまでのパス)
+def SetHeaderAlignment(inputFile):
+    wb, ws = OpenExcelFile(inputFile)
+
+    # ヘッダ行のセルに対して上下中央揃えを適用
+    for cell in ws[1]:  # 1行目がヘッダ行と仮定
+        cell.alignment = styles.Alignment(vertical='center', horizontal='center')
+
+    # Excelファイルを保存
+    wb.save(inputFile)
+
+
 #--- Excelファイルの特定の列にフィルタを適用する ---#
 # inputFile:入力'.xlsxファイル'(.xlsxまでのパス)
 # colS:フィルタ対象スタート列
