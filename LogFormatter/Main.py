@@ -13,7 +13,7 @@ import os
 
 #--- 自作モジュールのインポート ---#
 import ReadWriteFile
-import EditExcelFile
+import FormatExcelFile
 import DataOperate
 
 #--- 変数宣言 ---#
@@ -68,22 +68,22 @@ def main():
 
     #=== Excel編集ブロック ===#
     #--- ヘッダ挿入 ---#
-    EditExcelFile.InsertHeader(outputExcelFile, HEADER_STR_LIST)
+    FormatExcelFile.InsertHeader(outputExcelFile, HEADER_STR_LIST)
 
     #--- セル列幅調整 ---#
-    EditExcelFile.AdjustColWidth(outputExcelFile)
+    FormatExcelFile.AdjustColWidth(outputExcelFile)
 
     #--- セル行高設定 ---#
-    EditExcelFile.SetRowHeight(outputExcelFile, 25)
+    FormatExcelFile.SetRowHeight(outputExcelFile, 25)
 
     #--- フォント設定 ---#
-    EditExcelFile.SetDesignedFont(outputExcelFile, "Arial")
+    FormatExcelFile.SetDesignedFont(outputExcelFile, "Arial")
 
     #--- フィルタ適用 ---#
-    EditExcelFile.ApplyFilter(outputExcelFile, 1, 10)
+    FormatExcelFile.ApplyFilter(outputExcelFile, 1, 10)
 
     #--- ウィンドウ枠の固定 ---#
-    EditExcelFile.UseFreezePanes(outputExcelFile, "A2")
+    FormatExcelFile.UseFreezePanes(outputExcelFile, "A2")
 
     #--- カラムの値に応じて行のセルの色を設定 ---#
     # 色情報設定ファイルパス
@@ -94,7 +94,7 @@ def main():
     colorInfo = ReadWriteFile.ReadColorInfoFile(colorSetFilePath)
 
     # 行のセルの色を設定
-    EditExcelFile.SetRowColors(outputExcelFile, colorInfo, 4, 10)
+    FormatExcelFile.SetRowColors(outputExcelFile, colorInfo, 4, 10)
 
 
 if __name__ == "__main__":
