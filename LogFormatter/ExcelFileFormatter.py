@@ -2,7 +2,7 @@
 # coding: utf-8
 
 ###
-# EidtExcelFile
+# ExcelFileFormatter
 # エクセルファイル編集スクリプト
 # 
 ###
