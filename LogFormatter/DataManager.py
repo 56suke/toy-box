@@ -2,8 +2,8 @@
 # coding: utf-8
 
 ###
-# DataOperte.py
-# データ操作を行うためのスクリプト
+# DataManager.py
+# 
 # 
 ###
 

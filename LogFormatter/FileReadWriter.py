@@ -23,20 +23,35 @@ def ReadTxtFile(inputFile):
     #--- 変数宣言 ---#
 
     #--- .txtファイルの中身を取得 ---#
-    with open(inputFile, 'r') as f:
-        allData = f.read()
-    return allData
+    with open(inputFile, 'r') as file:
+        data = [line.rstrip('\n') for line in file.readlines()]
+    return data
+
+
+#--- .txtファイルのデータ統合 ---#
+# inputFileList:'.txtファイル'のリスト(.txtファイルまでのパスリスト)
+def MergeTxtFiles(inputFileList):
+    #--- 変数宣言 ---#
+    mergedData = []
+
+    for filePath in inputFileList:
+        data = ReadTxtFile(filePath)
+        mergedData.extend(data)
+    return mergedData
 
 
 #--- .txtファイルの書込 ---#
-# data:出力データ
+# dataList:出力データリスト
 # outputFile:出力'.txtファイル'(.txtファイルまでのパス)
-def WriteTxtFile(data, outputFile):
+def WriteTxtFile(dataList, outputFile):
     #--- 変数宣言 ---#
+    # リストの要素を文字列に連結
+    data_str = '\n'.join(dataList)
+
 
     #--- .txtファイル出力 ---#
     with open(outputFile, 'w') as f:
-        f.write(data)
+        f.write(data_str)
 
 
 #=== .csvファイル処理ブロック ===#

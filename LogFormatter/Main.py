@@ -12,21 +12,27 @@ import sys
 import os
 
 #--- 自作モジュールのインポート ---#
-import ReadWriteFile
-import FormatExcelFile
-import DataOperate
+import FileReadWriter
+import ExcelFileFormatter
+import DataManager
+import FileManager
 
 #--- 変数宣言 ---#
 curScript = sys.argv[0]
 #inputFile = sys.argv[1]
 
-inputFile = "input.txt"
+# 入力データファイルディレクトリ名称
+INPUTDATA_DIR_NAME = "InputData"
+
+# 入力データファイル名称
+INPUT_FILE_NAME = "input.txt"
 
 # 設定ファイルディレクトリ名称
 SETTING_DIR_NAME = "Settings"
 
 # ヘッダ文字列定数
 HEADER_STR_LIST = ['# Date', 'Time', 'Data1', 'Data2', 'Color', 'Direction', 'Value']
+
 
 #--- 実行ファイルパスを取得 ---#
 def GetExeFilePath():
@@ -50,57 +56,57 @@ def main():
     exeFilePath = GetExeFilePath()
     exeFileDir = os.path.dirname(exeFilePath)
 
+    #--- ファイル統合処理 ---#
+    # 入力データディレクトリパス
+    inputDataDirPath = os.path.join(exeFileDir, INPUTDATA_DIR_NAME)
+    # 入力データディレクトリパスから入力データファイルリスト生成
+    inputFileList = FileManager.GetFilesList(inputDataDirPath, '.txt')
+    # データの統合
+    mergedData = FileReadWriter.MergeTxtFiles(inputFileList)
+    # 統合データを.txtファイルとして出力
+    outputInputFile = os.path.join(exeFileDir, INPUT_FILE_NAME)
+    FileReadWriter.WriteTxtFile(mergedData, outputInputFile)
+
     #--- 入力ファイル名称取得 ---#
-    fileName = os.path.splitext(os.path.basename(inputFile))[0]
+    fileName = os.path.splitext(os.path.basename(INPUT_FILE_NAME))[0]
     #--- 出力ファイル名称設定 ---#
     outputExcelFile = fileName + '.xlsx'
     outputExcelFile = os.path.join(exeFileDir, outputExcelFile)
 
     #--- ファイル読込 ---#
-    rowData = ReadWriteFile.ReadTxtFile(inputFile)
-    #--- 前処理 ---#
-    editData = rowData.strip().split('\n')
+    rowData = FileReadWriter.ReadTxtFile(INPUT_FILE_NAME)
     #--- 時系列にソート ---#
-    sortData = DataOperate.SortDateData(editData)
+    sortData = DataManager.SortDateData(rowData)
     #--- ファイル出力 ---#
-    ReadWriteFile.WriteTabSprDataToExcelFile(sortData, outputExcelFile)
+    FileReadWriter.WriteTabSprDataToExcelFile(sortData, outputExcelFile)
 
 
     #=== Excel編集ブロック ===#
     #--- ヘッダ挿入 ---#
-    FormatExcelFile.InsertHeader(outputExcelFile, HEADER_STR_LIST)
-
+    ExcelFileFormatter.InsertHeader(outputExcelFile, HEADER_STR_LIST)
     #--- セル列幅調整 ---#
-    FormatExcelFile.AdjustColWidth(outputExcelFile)
-
+    ExcelFileFormatter.AdjustColWidth(outputExcelFile)
     #--- セル行高設定 ---#
-    FormatExcelFile.SetRowHeight(outputExcelFile, 25)
-
+    ExcelFileFormatter.SetRowHeight(outputExcelFile, 25)
     #--- フォント設定 ---#
-    FormatExcelFile.SetDesignedFont(outputExcelFile, "Arial")
-
+    ExcelFileFormatter.SetDesignedFont(outputExcelFile, "Arial")
     #--- ヘッダ行の文字を太字に設定する ---#
-    FormatExcelFile.SetHeaderFontBold(outputExcelFile)
-
+    ExcelFileFormatter.SetHeaderFontBold(outputExcelFile)
     #--- ヘッダ行文字列を上下中央揃えに設定する ---#
-    FormatExcelFile.SetHeaderAlignment(outputExcelFile)
-
+    ExcelFileFormatter.SetHeaderAlignment(outputExcelFile)
     #--- フィルタ適用 ---#
-    FormatExcelFile.ApplyFilter(outputExcelFile, 1, 10)
-
+    ExcelFileFormatter.ApplyFilter(outputExcelFile, 1, 10)
     #--- ウィンドウ枠の固定 ---#
-    FormatExcelFile.UseFreezePanes(outputExcelFile, "A2")
+    ExcelFileFormatter.UseFreezePanes(outputExcelFile, "A2")
 
     #--- カラムの値に応じて行のセルの色を設定 ---#
-    # 色情報設定ファイルパス
+    # 色情報設定ファイルディレクトリパス
     setDirPath = os.path.join(exeFileDir, SETTING_DIR_NAME)
     colorSetFilePath = os.path.join(setDirPath, "ColorsInfo.csv")
-
     # 色情報を設定ファイルから取得
-    colorInfo = ReadWriteFile.ReadColorInfoFile(colorSetFilePath)
-
+    colorInfo = FileReadWriter.ReadColorInfoFile(colorSetFilePath)
     # 行のセルの色を設定
-    FormatExcelFile.SetRowColors(outputExcelFile, colorInfo, 4, 10)
+    ExcelFileFormatter.SetRowColors(outputExcelFile, colorInfo, 4, 10)
 
 
 if __name__ == "__main__":
