@@ -3,7 +3,7 @@
 
 ###
 # FileManager.py
-# 
+# ファイル操作用スクリプト
 # 
 ###
 
@@ -14,10 +14,24 @@ import os
 #--- 変数宣言 ---#
 curScript = sys.argv[0]
 
+# 日付と時刻の書式
+DATE_FORMAT = '%Y/%m/%d %H:%M:%S.%f'
+
+
+#--- 実行ファイルパス(絶対パス)を取得 ---#
+def GetExecFilePath(filePath):
+    # PyInstallerが生成した一時フォルダ内で実行されている場合
+    # sys.executableが実行可能ファイルパスを返却
+    if getattr(sys, 'frozen', False):
+        execPath = os.path.abspath(sys.executable)
+    # スクリプトが直接Pythonインタプリタで実行されている場合
+    # 通常のPythonスクリプトとして実行されている場合のファイルパス
+    else:
+        execPath = os.path.abspath(filePath)
+    return execPath
+
 
 #--- 指定ディレクトリ内に指定拡張子のファイルがあるのかチェックする ---#
-# dirPath:指定ディレクトリパス
-# extension:指定ファイル拡張子
 def GetFilesList(dirPath, extension):
     #--- 変数宣言 ---#
     filesList = []
@@ -27,6 +41,7 @@ def GetFilesList(dirPath, extension):
             filePath = os.path.join(dirPath, file)
             filesList.append(filePath)
     return filesList
+
 
 #--- main関数 ---#
 def main():
