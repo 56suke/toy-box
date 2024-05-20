@@ -2,7 +2,7 @@
 # coding: utf-8
 
 ###
-# ReadWriteFile
+# FileReadWriter.py
 # ファイルの読書用スクリプト
 # 
 ###
@@ -28,8 +28,7 @@ def ReadTxtFile(inputFile):
     return data
 
 
-#--- .txtファイルのデータ統合 ---#
-# inputFileList:'.txtファイル'のリスト(.txtファイルまでのパスリスト)
+#--- .txtファイルのデータ結合 ---#
 def MergeTxtFiles(inputFileList):
     #--- 変数宣言 ---#
     mergedData = []
@@ -41,17 +40,14 @@ def MergeTxtFiles(inputFileList):
 
 
 #--- .txtファイルの書込 ---#
-# dataList:出力データリスト
-# outputFile:出力'.txtファイル'(.txtファイルまでのパス)
 def WriteTxtFile(dataList, outputFile):
     #--- 変数宣言 ---#
     # リストの要素を文字列に連結
-    data_str = '\n'.join(dataList)
-
+    dataStr = '\n'.join(dataList)
 
     #--- .txtファイル出力 ---#
-    with open(outputFile, 'w') as f:
-        f.write(data_str)
+    with open(outputFile, 'w') as file:
+        file.write(dataStr)
 
 
 #=== .csvファイル処理ブロック ===#
@@ -91,8 +87,8 @@ def WriteTsvFile(data, outputFile):
     #--- 変数宣言 ---#
 
     #--- tsvファイル出力 ---#
-    with open(outputFile, 'w', encoding='utf-8', newline='') as f:
-        writer = csv.writer(f, delimiter='\t')
+    with open(outputFile, 'w', encoding='utf-8', newline='') as file:
+        writer = csv.writer(file, delimiter='\t')
 
         # 各業のデータをCSVファイルに書込
         for row in data:
@@ -101,6 +97,24 @@ def WriteTsvFile(data, outputFile):
 
 
 #=== .xlsxファイル処理ブロック ===#
+#--- tsvファイルからExcelファイルへの変換 ---#
+def ConvertTsvToExcel(inputFile, outputFile):
+    #--- 変数宣言 ---#
+
+    # 新規ワークブックの作成
+    wb = Workbook()
+    ws = wb.active
+
+    # .tsvファイルを開いて読み込む
+    with open(inputFile, 'r', encoding='utf-8') as file:
+        tsvReader = csv.reader(file, delimiter='\t')
+        for row in tsvReader:
+            ws.append(row) # 読み込んだ行をExcelシートに追加
+    
+    # Excelファイルを保存
+    wb.save(outputFile)
+
+
 #--- ('\t'区切りの)dataをExcelに新規出力 ---#
 # data:出力データ
 # outputFile:出力'.xlsxファイル'(.xlsxファイルまでのパス)
@@ -135,6 +149,19 @@ def ReadExcel(inputFile):
         listData.append(row)
 
     return listData
+
+
+#--- 各行のIndex値も込みでExcelファイル読込 ---#
+# minRos, startIndex共にヘッダを考慮し、default値を2とする
+def ReadExcelWithIndex(inputFile, minRow=2, startIndex=2):
+    #--- 変数宣言 ---#
+
+    wb = load_workbook(filename=inputFile, read_only=True)
+    ws = wb.active
+
+    # 各行のデータとインデックスをリストにまとめる
+    rows_with_index = [[idx] + list(row) for idx, row in enumerate(ws.iter_rows(min_row=minRow, values_only=True), start=startIndex)]
+    return rows_with_index
 
 
 #--- 辞書型リストデータをExcelファイルへ書込 ---#
@@ -179,21 +206,25 @@ def ExtractDataFromExcel(inputFile, colIndex, keyword):
 
 
 #--- リストデータをExcelファイルへ書込 ---#
-def ListDataToExcel(data, outputFile, headerStr=''):
+# data (list)
+def WriteListDataToExcel(data, outputFile, headerStr=''):
     #--- 変数宣言 ---#
-    startVal = 2
+    startIndex = 1
 
     wb = Workbook()
     ws = wb.active
 
     if (headerStr != ''):
-        ws.append(headerStr)
-        startVal = 1
+        # ヘッダ行を追加
+        for colIndex, header in enumerate(headerStr, start=1):
+            ws.cell(row=1, column=colIndex, value=header)
+        startIndex = 2
     
-    for idx, row in enumerate(data, start=startVal): # データの書込開始行
-        for col_idx, value in enumerate(row, 1):
+    # データリストをExcelファイルに書込
+    for idx, row in enumerate(data, start=startIndex): # データ行はstartIndex値から開始
+        for col_idx, value in enumerate(row, start=1):
             ws.cell(row=idx, column=col_idx, value=value)
-
+            
     # Excelファイルを保存
     wb.save(outputFile)
 

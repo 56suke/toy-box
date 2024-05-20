@@ -10,12 +10,15 @@
 #--- モジュールのインポート ---#
 import sys
 import os
+from tkinter import Tk, messagebox
+
+
+# プロジェクトのルートディレクトリをsys.pathに追加
+#sys.path.append(os.path.join(os.path.dirname(__file__), '../../'))
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
 #--- 自作モジュールのインポート ---#
-import FileReadWriter
-import ExcelFileFormatter
-import DataManager
-import FileManager
+from Utility import FileReadWriter, ExcelFileFormatter, FileManager, DataManager
 
 #--- 変数宣言 ---#
 curScript = sys.argv[0]
@@ -23,29 +26,12 @@ curScript = sys.argv[0]
 
 # 入力データファイルディレクトリ名称
 INPUTDATA_DIR_NAME = "InputData"
-
 # 入力データファイル名称
 INPUT_FILE_NAME = "input.txt"
-
 # 設定ファイルディレクトリ名称
 SETTING_DIR_NAME = "Settings"
-
 # ヘッダ文字列定数
 HEADER_STR_LIST = ['# Date', 'Time', 'Data1', 'Data2', 'Color', 'Direction', 'Value']
-
-
-#--- 実行ファイルパスを取得 ---#
-def GetExeFilePath():
-    # PyInstallerが生成した一時フォルダ内で実行されている場合
-    # sys.executable が実行可能ファイルパスを返却
-    if getattr(sys, 'frozen', False):
-        applicationPath = os.path.abspath(sys.executable)
-    else:
-        # スクリプトが直接Pythonインタプリタで実行されている場合
-        # 通常のPythonスクリプトとして実行されている場合のファイルパス
-        applicationPath = os.path.abspath(__file__)
-    
-    return applicationPath
 
 
 #--- main関数 ---#
@@ -53,8 +39,9 @@ def main():
     #--- 変数宣言 ---#
 
     #--- 実行ファイルパスを取得 ---#
-    exeFilePath = GetExeFilePath()
+    exeFilePath = FileManager.GetExecFilePath(__file__)
     exeFileDir = os.path.dirname(exeFilePath)
+    inputFilePath = os.path.join(exeFileDir, INPUT_FILE_NAME)
 
     #--- ファイル統合処理 ---#
     # 入力データディレクトリパス
@@ -74,9 +61,9 @@ def main():
     outputExcelFile = os.path.join(exeFileDir, outputExcelFile)
 
     #--- ファイル読込 ---#
-    rowData = FileReadWriter.ReadTxtFile(INPUT_FILE_NAME)
+    rowData = FileReadWriter.ReadTxtFile(inputFilePath)
     #--- 時系列にソート ---#
-    sortData = DataManager.SortDateData(rowData)
+    sortData = DataManager.FormatAndSortDateData(rowData, 0, 1)
     #--- ファイル出力 ---#
     FileReadWriter.WriteTabSprDataToExcelFile(sortData, outputExcelFile)
 
@@ -108,6 +95,12 @@ def main():
     # 行のセルの色を設定
     ExcelFileFormatter.SetRowColors(outputExcelFile, colorInfo, 4, 10)
 
+    #--- messageBox表示 ---#
+    root = Tk()
+    root.withdraw()
+    root.attributes('-topmost', True)
+    messagebox.showinfo('通知', 'フォーマット処理が完了しました')
+    root.destroy()
 
 if __name__ == "__main__":
     main()

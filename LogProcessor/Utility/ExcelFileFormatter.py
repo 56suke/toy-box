@@ -2,7 +2,7 @@
 # coding: utf-8
 
 ###
-# ExcelFileFormatter
+# ExcelFileFormater
 # エクセルファイル編集スクリプト
 # 
 ###
@@ -11,14 +11,13 @@
 import sys
 from openpyxl import load_workbook, utils, styles
 
-
 #--- 変数宣言 ---#
 curScript = sys.argv[0]
 ROW_HEIGHT_RATIO = 1.3
 
 
 #--- 入力Excelファイル開き、アクティブなシートを取得するメソッド ---#
-# inputFile:入力'.xlsxファイル'(.xlsxまでのパス)
+# inputFile (str) : 入力'.xlsxファイル'(.xlsxまでのパス)
 def GetExcelWbWs(inputFile):
     #--- 変数宣言 ---#
 
@@ -31,7 +30,7 @@ def GetExcelWbWs(inputFile):
 
 
 #--- セルの列幅の自動調整 ---#
-# inputFile:入力'.xlsxファイル'(.xlsxまでのパス)
+# inputFile (str) : 入力'.xlsxファイル'(.xlsxまでのパス)
 def AdjustColWidth(inputFile):
     #--- 変数宣言 ---#
 
@@ -55,8 +54,8 @@ def AdjustColWidth(inputFile):
 
 
 #--- セルの行高設定(引数指定) ---#
-# inputFile:入力'.xlsxファイル'(.xlsxまでのパス)
-# hVal:セルの行高
+# inputFile (str) : 入力'.xlsxファイル'(.xlsxまでのパス)
+# hVal :セルの行高
 def SetRowHeight(inputFile, hVal):
     #--- 変数宣言 ---#
 
@@ -71,17 +70,21 @@ def SetRowHeight(inputFile, hVal):
 
 
 #--- 全てのセルのフォント設定(引数指定) ---#
-# inputFile:入力'.xlsxファイル'(.xlsxまでのパス)
-# fontType:フォント名称
+# inputFile (str) : 入力'.xlsxファイル'(.xlsxまでのパス)
+# fontType (str) : フォント名称
 def SetDesignedFont(inputFile, fontType):
     #--- 変数宣言 ---#
 
     wb, ws = GetExcelWbWs(inputFile)
 
-    # 全ての行高を設定
+    # 全てのセルのフォントを変更する
     for row in ws.iter_rows():
         for cell in row:
-            cell.font = styles.Font(name=fontType) # フォントを設定
+            # 現在のフォントの設定を取得する
+            currentFont = cell.font
+            # フォントを設定する
+            cell.font = styles.Font(name=fontType, bold=currentFont.bold, italic=currentFont.italic, color=currentFont.color,
+                                    size=currentFont.size, underline=currentFont.underline, strike=currentFont.strike)
 
     # Excelファイルを保存
     wb.save(inputFile)
@@ -123,7 +126,7 @@ def SetHeaderFontBold(inputFile):
 
 
 #--- ヘッダ行文字列を上下中央揃えに設定する ---#
-# inputFile:入力'*.xlsxファイル'(*.xlsxまでのパス)
+# inputFile (str) : 入力'*.xlsxファイル'(*.xlsxまでのパス)
 def SetHeaderAlignment(inputFile):
     wb, ws = GetExcelWbWs(inputFile)
 
@@ -134,6 +137,23 @@ def SetHeaderAlignment(inputFile):
     # Excelファイルを保存
     wb.save(inputFile)
 
+
+#--- 特定のカラム列のセルを右揃えに設定する ---#
+# inputFile (str) : 入力'*.xlsxファイル'(*.xlsxまでのパス)
+def SetColumnCellsRightAlignment(inputFile, targetCol):
+    #--- 変数宣言 ---#
+    # 列index値の調整
+    targetCol = targetCol + 1
+
+    wb, ws = GetExcelWbWs(inputFile)
+
+    # 特定のカラム列のセルを右揃えに設定
+    for row in ws.iter_rows(min_row=2, max_row=ws.max_row, min_col=targetCol, max_col=targetCol):
+        for cell in row:
+            cell.alignment = styles.Alignment(vertical='center', horizontal='right')
+
+    # Excelファイルを保存
+    wb.save(inputFile)
 
 #--- Excelファイルの特定の列にフィルタを適用する ---#
 # inputFile:入力'.xlsxファイル'(.xlsxまでのパス)
