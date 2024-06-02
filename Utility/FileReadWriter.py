@@ -53,13 +53,19 @@ def WriteTxtFile(dataList, outputFile):
 #=== .csvファイル処理ブロック ===#
 #--- .csvファイル読込 ---#
 # inputFile:入力'.csvファイル'(.csvファイルまでのパス)
-def ReadCsvFile(inputFile):
+# headerSkip:ヘッダを読み飛ばすかどうかを判定するフラグ default:False
+def ReadCsvFile(inputFile, headerSkip=False):
     #--- 変数宣言 ---#
     data = []
 
     #--- .csvファイルの中身をリストとして取得 ---#
     with open(inputFile, 'r', encoding='utf-8', newline='') as file:
         reader = csv.reader(file)
+
+        # ヘッダ行の読み飛ばし処理
+        if (headerSkip == True):
+            next(reader)
+        
         for row in reader:
             data.append(row)
     return data
