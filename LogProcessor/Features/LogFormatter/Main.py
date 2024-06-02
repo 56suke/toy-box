@@ -14,8 +14,8 @@ from tkinter import Tk, messagebox
 
 
 # プロジェクトのルートディレクトリをsys.pathに追加
-#sys.path.append(os.path.join(os.path.dirname(__file__), '../../'))
-sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+#sys.path.append(os.path.join(os.path.dirname(__file__), '../../../'))
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 
 #--- 自作モジュールのインポート ---#
 from Utility import FileReadWriter, ExcelFileFormatter, FileManager, DataManager
