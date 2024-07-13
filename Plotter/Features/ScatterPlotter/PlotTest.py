@@ -26,20 +26,21 @@ curScript = sys.argv[0]
 #--- main関数 ---#
 def main():
 
+    #--- 変数宣言 ---#
     inputFile = 'final_dataset_BFP.csv'
     exeFilePath = FileManager.GetExecFilePath(__file__)
     exeFileDir = os.path.dirname(exeFilePath)
     inputFilePath = os.path.join(exeFileDir, inputFile)
 
     inputData = FileReadWriter.ReadCsvFile(inputFilePath, True)
-    mAge = []
+    mAge    = []
     mWeight = []
     mHeight = []
-    mBmi = []
-    fAge = []
+    mBmi    = []
+    fAge    = []
     fWeight = []
     fHeight = []
-    fBmi = []
+    fBmi    = []
 
     for data in inputData:
         if (data[5] == 'Male'):
@@ -53,66 +54,76 @@ def main():
             fHeight.append(float(data[1]))
             fBmi.append(float(data[2]))
         
-
-    #--- 変数宣言 ---#
-    xMin = 15
-    xMax = 61
-    yMin = 15
-    yMax = 41
-    """
-    xTicksOffset = 0.001
-    yTicksOffset = 0.001
-    """
-    cm = 1 / 2.54       # inch -> cm 変換式
-
+    
     #--- rcParams設定 ---#
-    plt.rcParams['axes.axisbelow'] = True # grid線を後ろに
+    plt.rcParams['axes.axisbelow']  = True   # grid線を後ろに
     plt.rcParams['xtick.direction'] = 'in'
     plt.rcParams['ytick.direction'] = 'in'
-    plt.rcParams['font.family'] = 'Meiryo'
-    #plt.rcParams['figure.figsize'] = (12*cm, 10*cm)    # グラフの大きさ
+    plt.rcParams['font.family']     = 'Meiryo'
 
-
+    #--- オブジェクト生成 ---#
+    # inch -> cm 変換式
+    cm = 1 / 2.54
     fig, ax = plt.subplots(figsize=(12*cm, 10*cm))
     
     #--- グラフの描画設定 ---#
     ax.scatter(
-                mWeight,                  # x軸値
-                mHeight,                  # y軸値
-                s=10,
+                mWeight,            # x軸値
+                mHeight,            # y軸値
                 marker = "o",       # マーカーの形状
+                s = 10,             # マーカーサイズ
+                alpha = 0.7,        # マーカーの透明度
                 label = "Male"      # ラベル
                 )
     
     ax.scatter(
-                fWeight,                  # x軸値
-                fHeight,                  # y軸値
-                s=10,
+                fWeight,            # x軸値
+                fHeight,            # y軸値
                 marker = "*",       # マーカーの形状
-                label = "Female"      # ラベル
+                s = 10,             # マーカーサイズ
+                alpha = 0.7,        # マーカーの透明度
+                label = "Female"    # ラベル
                 )
     
     #--- 書式設定・出力設定 ---#
-    #plt.minorticks_on()                                             # 補助目盛線表示
-    ax.grid(which = 'major', linestyle = 'dashed')                  # grid線表示設定
-    #ax.grid(which = 'minor', linestyle = 'dotted')                  # grid線表示設定
+    # 目盛線, 補助線
+    ax.grid(which = 'major', linestyle = 'dashed')      # grid線表示設定
+    #plt.minorticks_on()                                # 補助目盛線表示
+    #ax.grid(which = 'minor', linestyle = 'dotted')     # grid線表示設定
 
-
+    # 各種名称設定
     ax.set_title("Weight vs Height")    # グラフタイトル名称
     ax.set_xlabel("Weight")             # X軸ラベル名称
     ax.set_ylabel("Height")             # Y軸ラベル名称
 
+    # 軸メモリ設定
+    xMin = 50
+    xMax = 110
+    yMin = 1.35
+    yMax = 2.00
+    xTicksOffset = 5
+    yTicksOffset = 0.05
 
-    ax.set_xticks(np.arange(50, 116, 5))                # X軸メモリ間隔
-    ax.set_yticks(np.arange(1.35, 2.06, 0.05))              # Y軸メモリ間隔
-    ax.set_xlim(50, 110)
-    ax.set_ylim(1.35, 2.00)
-
-    ax.legend()          # 凡例
-
-    #plt.savefig("./Matplotlib/sample.png")          # グラフの出力
-    #plt.savefig("./sample.pdf")          # グラフの出力
-    plt.savefig("./sample.pdf", bbox_inches="tight")          # グラフの出力
+    ax.set_xticks(np.arange(xMin, xMax + 1, xTicksOffset))      # X軸メモリ刻み
+    ax.set_yticks(np.arange(yMin, yMax + 0.01, yTicksOffset))   # Y軸メモリ刻み
+    ax.set_xlim(xMin, xMax)                                     # X軸表示範囲
+    ax.set_ylim(yMin, yMax)                                     # Y軸表示範囲
+    
+    # 凡例設定
+    ax.legend(
+                #fontsize='small',
+                markerscale=2, 
+                ncol=2, 
+                columnspacing=0.2, 
+                handletextpad=-0.2, 
+                frameon=False, 
+                shadow=False, 
+                loc='upper center', 
+                bbox_to_anchor=(0.5, -0.1)
+                )
+    
+    # グラフ出力
+    plt.savefig("./sample.pdf", bbox_inches="tight")
     plt.show()
 
 if __name__ == "__main__":
