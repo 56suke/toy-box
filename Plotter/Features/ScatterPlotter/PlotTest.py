@@ -123,7 +123,7 @@ def main():
                 )
     
     # グラフ出力
-    plt.savefig("./sample.pdf", bbox_inches="tight")
+    plt.savefig("./ScatterPlotSample.pdf", bbox_inches="tight")
     plt.show()
 
 if __name__ == "__main__":
