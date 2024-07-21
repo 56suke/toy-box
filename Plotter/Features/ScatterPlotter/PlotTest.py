@@ -122,6 +122,9 @@ def main():
                 bbox_to_anchor=(0.5, -0.1)
                 )
     
+    # レイアウトを調整
+    fig.tight_layout()
+
     # グラフ出力
     plt.savefig("./ScatterPlotSample.pdf", bbox_inches="tight")
     plt.show()
