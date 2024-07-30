@@ -2,7 +2,7 @@
 # coding: utf-8
 
 ###
-# /* PlotTest.py */
+# /* LinePlotTest.py */
 # 
 # 
 ###
