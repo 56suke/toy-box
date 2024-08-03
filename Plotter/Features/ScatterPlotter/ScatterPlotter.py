@@ -126,7 +126,7 @@ def main():
     fig.tight_layout()
 
     # グラフ出力
-    plt.savefig("./ScatterPlotSample.pdf", bbox_inches="tight")
+    plt.savefig("./ScatterPlotSample.pdf", bbox_inches="tight", pad_inches=0.005)
     plt.show()
 
 if __name__ == "__main__":

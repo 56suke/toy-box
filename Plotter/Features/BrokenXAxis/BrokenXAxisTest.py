@@ -49,23 +49,23 @@ def main():
     #--- オブジェクト生成 ---#
     # inch -> cm 変換式
     cm = 1 / 2.54
-    fig, (ax1, ax2) = plt.subplots(2, 1, sharex=True, figsize=(12*cm, 8*cm), gridspec_kw={'height_ratios': [3, 1]})
+    fig, (ax1, ax2) = plt.subplots(1, 2, sharex=False, sharey=True, figsize=(12*cm, 8*cm), gridspec_kw={'width_ratios': [5, 3]})
 
-    # 上のプロット (高いY軸範囲)
+    # 左のプロット (低いX軸範囲)
     ax1.plot(time, i_A, color="tab:orange", linewidth=3, label="Current")
     ax1.grid(which='major', linestyle='dashed')
-    ax1.spines['bottom'].set_visible(False)
-    ax1.tick_params(bottom=False)
+    ax1.spines['right'].set_visible(False)
 
-    # 下のプロット (低いY軸範囲)
+    # 右のプロット (高いX軸範囲)
     ax2.plot(time, i_A, color="tab:orange", linewidth=3, label="Current")
     ax2.grid(which='major', linestyle='dashed')
-    ax2.spines['top'].set_visible(False)
+    ax2.spines['left'].set_visible(False)
+    ax2.tick_params(labelleft=False, left=False)
 
     # 各種名称設定
-    ax2.set_xlabel("Time[sec]")  # X軸ラベル名称
-    # Y軸ラベルはfig.textを使って設定
-    fig.text(-0.02, 0.55, 'Current[A]', va='center', rotation='vertical')
+    # X軸ラベルはfig.textを使って設定
+    fig.text(0.5, 0, 'Time[sec]', ha='center')
+    ax1.set_ylabel("Current[A]")  # Y軸ラベル名称
 
     # 軸メモリ設定
     xMin = 0
@@ -75,18 +75,21 @@ def main():
     xTicksOffset = 2
     yTicksOffset = 2
 
-    ax1.set_xticks(np.arange(xMin, xMax + 1, xTicksOffset))  # X軸メモリ刻み
-    ax1.set_yticks(np.arange(yMin, yMax + 1, yTicksOffset))  # Y軸メモリ刻み
-    ax1.set_xlim(xMin, xMax)                                 # X軸表示範囲
-    ax1.set_ylim(6, 12)                                      # Y軸表示範囲
+    ax1.set_xticks(np.arange(xMin, xMax + 1, xTicksOffset)) # X軸メモリ刻み
+    ax1.set_yticks(np.arange(yMin, yMax + 1, yTicksOffset)) # Y軸メモリ刻み
+    ax1.set_xlim(0, 10)                                     # X軸表示範囲
+    ax1.set_ylim(yMin, yMax)                                # Y軸表示範囲
 
-    ax2.set_xticks(np.arange(xMin, xMax + 1, xTicksOffset))  # X軸メモリ刻み
-    ax2.set_yticks(np.arange(yMin, yMax + 1, yTicksOffset))  # Y軸メモリ刻み
-    ax2.set_xlim(xMin, xMax)                                 # X軸表示範囲
-    ax2.set_ylim(0, 2)                                       # Y軸表示範囲
+    ax2.set_xticks(np.arange(xMin, xMax + 1, xTicksOffset)) # X軸メモリ刻み
+    ax2.set_yticks(np.arange(yMin, yMax + 1, yTicksOffset)) # Y軸メモリ刻み
+    ax2.set_xlim(12, 18)                                    # X軸表示範囲
+    ax2.set_ylim(yMin, yMax)                                # Y軸表示範囲
     
     # 凡例設定
-    ax2.legend(
+    handles, labels = ax1.get_legend_handles_labels()
+    fig.legend(
+                handles,
+                labels,
                 #fontsize='small',
                 markerscale=2, 
                 ncol=1, 
@@ -97,22 +100,22 @@ def main():
                 #loc='lower center', 
                 #bbox_to_anchor=(0.5, 1.0),
                 loc='upper center', 
-                bbox_to_anchor=(0.5, -0.6)
+                bbox_to_anchor=(0.5, 0)
                 )
 
     # ギャップを示すためのデコレーション（斜め線）
     d = .5  # proportion of vertical to horizontal extent of the slanted line
-    kwargs = dict(marker=[(-1, -d), (1, d)], markersize=6,
+    kwargs = dict(marker=[(-d, -1), (d, 1)], markersize=6,
               linestyle="none", color='k', mec='k', mew=1, clip_on=False)
-    ax1.plot([0, 1], [0, 0], transform=ax1.transAxes, **kwargs)
-    ax2.plot([0, 1], [1, 1], transform=ax2.transAxes, **kwargs)
+    ax1.plot([1, 1], [0, 1], transform=ax1.transAxes, **kwargs)
+    ax2.plot([0, 0], [0, 1], transform=ax2.transAxes, **kwargs)
 
     # レイアウトを調整
     fig.tight_layout()
-    fig.subplots_adjust(hspace=0.2)  # hspaceを小さくして間隔を狭める
+    fig.subplots_adjust(wspace=0.1)  # hspaceを小さくして間隔を狭める
 
     # グラフ出力
-    plt.savefig("./BrokenYAxisTest.pdf", bbox_inches="tight", pad_inches=0.005)
+    plt.savefig("./BrokenXAxisTest.pdf", bbox_inches="tight", pad_inches=0.005)
     plt.show()
 
 if __name__ == "__main__":
