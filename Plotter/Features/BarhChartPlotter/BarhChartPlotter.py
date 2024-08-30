@@ -93,7 +93,8 @@ def main():
 
     # 各都市のデータを棒グラフとしてプロット
     for i, (city, temperatures) in enumerate(cities_data.items()):
-        offset = (i - (n - 1) / 2) * bar_height / n  # 中央に配置
+        temperatures = temperatures[::-1]                                                   # データの順序も反転
+        offset = (i - (n - 1) / 2) * bar_height / n                                         # 中央に配置
         ax.barh([p + offset for p in y], temperatures, height=bar_height / n, label=city)
 
     #--- 書式設定・出力設定 ---#
@@ -105,6 +106,9 @@ def main():
     ax.set_ylabel("年月")              # X軸ラベル名称
     ax.set_yticks(np.arange(0, len(date)))
     ax.set_yticklabels(date)
+
+    # y軸の順序を反転
+    ax.invert_yaxis()
 
     # 軸メモリ設定
     xMin = -5
