@@ -102,8 +102,8 @@ def main():
     ax.grid(which = 'major', linestyle = 'dashed')      # grid線表示設定
 
     # 各種名称設定
-    ax.set_xlabel("平均気温 (°C)")      # Y軸ラベル名称
-    ax.set_ylabel("年月")              # X軸ラベル名称
+    ax.set_xlabel("平均気温 (°C)")      # X軸ラベル名称
+    ax.set_ylabel("年月")              # Y軸ラベル名称
     ax.set_yticks(np.arange(0, len(date)))
     ax.set_yticklabels(date)
 
@@ -114,8 +114,8 @@ def main():
     xMin = -5
     xMax = 35
     yTicksOffset = 5
-    ax.set_xticks(np.arange(xMin, xMax + 1, yTicksOffset))  # Y軸メモリ刻み
-    ax.set_xlim(xMin, xMax)                                 # Y軸表示範囲
+    ax.set_xticks(np.arange(xMin, xMax + 1, yTicksOffset))  # X軸メモリ刻み
+    ax.set_xlim(xMin, xMax)                                 # X軸表示範囲
 
     # 凡例設定
     ax.legend(
