@@ -125,8 +125,8 @@ def main():
     xMin = 0
     xMax = 20
     xTicksOffset = 1
-    ax.set_xticks(np.arange(xMin, xMax + 1, xTicksOffset))  # Y軸メモリ刻み
-    ax.set_xlim(xMin, xMax)                                 # Y軸表示範囲
+    ax.set_xticks(np.arange(xMin, xMax + 1, xTicksOffset))  # X軸メモリ刻み
+    ax.set_xlim(xMin, xMax)                                 # X軸表示範囲
 
     # 凡例設定
     ax.legend(
