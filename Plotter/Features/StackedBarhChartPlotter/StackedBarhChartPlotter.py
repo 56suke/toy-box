@@ -114,6 +114,9 @@ def main():
     ax.set_yticks(np.arange(0, len(date)))
     ax.set_yticklabels(date)
 
+    # y軸の順序を反転
+    ax.invert_yaxis()
+
     # 軸メモリ設定
     xMin = 0
     xMax = 280
