@@ -54,12 +54,12 @@ def WriteTxtFile(dataList, outputFile):
 #--- .csvファイル読込 ---#
 # inputFile:入力'.csvファイル'(.csvファイルまでのパス)
 # headerSkip:ヘッダを読み飛ばすかどうかを判定するフラグ default:False
-def ReadCsvFile(inputFile, headerSkip=False):
+def ReadCsvFile(inputFile, headerSkip=False, encode='utf-8'):
     #--- 変数宣言 ---#
     data = []
 
     #--- .csvファイルの中身をリストとして取得 ---#
-    with open(inputFile, 'r', encoding='utf-8', newline='') as file:
+    with open(inputFile, 'r', encoding=encode, newline='') as file:
         reader = csv.reader(file)
 
         # ヘッダ行の読み飛ばし処理
@@ -73,12 +73,12 @@ def ReadCsvFile(inputFile, headerSkip=False):
 
 #--- .tsvファイル読込 ---#
 # inputFile:入力'.tsvファイル'(.tsvファイルまでのパス)
-def ReadTsvFile(inputFile):
+def ReadTsvFile(inputFile, encode='utf-8'):
     #--- 変数宣言 ---#
     data = []
 
     #--- .tsvファイルの中身をリストとして取得 ---#
-    with open(inputFile, 'r', encoding='utf-8', newline='') as file:
+    with open(inputFile, 'r', encoding=encode, newline='') as file:
         reader = csv.reader(file, delimiter='\t')
         for row in reader:
             data.append(row)
@@ -89,11 +89,11 @@ def ReadTsvFile(inputFile):
 # data:出力データ
 # outputFile:出力'.csvファイル'(.csvファイルまでのパス)
 # デリミタはタブ(\t)
-def WriteTsvFile(data, outputFile):
+def WriteTsvFile(data, outputFile, encode='utf-8'):
     #--- 変数宣言 ---#
 
     #--- tsvファイル出力 ---#
-    with open(outputFile, 'w', encoding='utf-8', newline='') as file:
+    with open(outputFile, 'w', encoding=encode, newline='') as file:
         writer = csv.writer(file, delimiter='\t')
 
         # 各業のデータをCSVファイルに書込
@@ -104,7 +104,7 @@ def WriteTsvFile(data, outputFile):
 
 #=== .xlsxファイル処理ブロック ===#
 #--- tsvファイルからExcelファイルへの変換 ---#
-def ConvertTsvToExcel(inputFile, outputFile):
+def ConvertTsvToExcel(inputFile, outputFile, encode='utf-8'):
     #--- 変数宣言 ---#
 
     # 新規ワークブックの作成
@@ -112,7 +112,7 @@ def ConvertTsvToExcel(inputFile, outputFile):
     ws = wb.active
 
     # .tsvファイルを開いて読み込む
-    with open(inputFile, 'r', encoding='utf-8') as file:
+    with open(inputFile, 'r', encoding=encode) as file:
         tsvReader = csv.reader(file, delimiter='\t')
         for row in tsvReader:
             ws.append(row) # 読み込んだ行をExcelシートに追加
