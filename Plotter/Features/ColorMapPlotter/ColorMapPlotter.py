@@ -49,7 +49,7 @@ def main():
 
     # オブジェクト生成 (inch -> cm 変換)
     cm = 1 / 2.54
-    fig, ax = plt.subplots(figsize=(10*cm, 10*cm))
+    fig, ax = plt.subplots(figsize=(12*cm, 12*cm))
 
     # 2次関数のカラーマップ表示
     c = ax.imshow(Z, extent=[xMin, xMax, yMin, yMax], origin='lower', cmap='turbo')
