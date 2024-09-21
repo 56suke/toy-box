@@ -2,7 +2,7 @@
 # coding: utf-8
 
 ###
-# /* ColorAndContourMapPlotter2.py */
+# /* 3DColorMapPlotter.py */
 # 
 # 
 ###
@@ -12,7 +12,7 @@ import sys
 import os
 import matplotlib.pyplot as plt
 import numpy as np
-from mpl_toolkits.axes_grid1 import make_axes_locatable
+from mpl_toolkits.mplot3d import Axes3D
 
 # プロジェクトのルートディレクトリをsys.pathに追加
 #sys.path.append(os.path.join(os.path.dirname(__file__), '../../../'))
@@ -38,6 +38,8 @@ def main():
     xMax = 10
     yMin = -10
     yMax = 10
+    zMin = 0
+    zMax = 200
 
     # グリッドの作成
     x = np.linspace(xMin, xMax, 400)
@@ -47,30 +49,21 @@ def main():
     # 数式の定義 (文字列として数式を定義)
     equation = "X**2 + Y**2"  # 任意の式をここで指定
     Z = eval(equation, {"X": X, "Y": Y})  # evalで式を評価し、Zを計算
-
+    
     # LaTeXで使える形に変換: **2 を ^2 に置き換える
     equation_latex = equation.replace("**2", "^2")
 
-    # 等高線のレベルを指定 (等間隔のレベル)
-    levels = np.arange(0, 200 + 1, 20)  # 0から200まで20刻み
-
-    # オブジェクト生成 (inch -> cm 変換)
+    # オブジェクト生成 (inch -> cm 変換), 3Dプロットのためのprojection指定をsubplotsで行う
     cm = 1 / 2.54
-    fig, ax = plt.subplots(figsize=(12*cm, 12*cm))
+    fig, ax = plt.subplots(figsize=(12*cm, 12*cm), subplot_kw={"projection": "3d"})
 
-    # 2次関数のカラーマップ表示
-    c = ax.imshow(Z, extent=[xMin, xMax, yMin, yMax], origin='lower', cmap='turbo')
+    # 3Dサーフェスプロットの作成
+    surface = ax.plot_surface(X, Y, Z, cmap='turbo', edgecolor='none', vmin=zMin, vmax=zMax)
 
-    # 等高線プロットを追加 (色は黒)
-    contour = ax.contour(X, Y, Z, levels=levels, colors='black', linewidths=1.0, alpha=0.5)
-
-    # カラーバーの追加 (AxesDividerを使用して下に配置し、サイズを調整)
-    divider = make_axes_locatable(ax)
-    cax = divider.append_axes("bottom", size="5%", pad=0.5)  # カラーバーの位置とサイズを調整
-    cbar = fig.colorbar(c, cax=cax, orientation='horizontal')
-    cbar.set_label('Z value')
-
-    # カラーバーの目盛りを等高線レベルに一致させる
+    # カラーバーの追加 (サイズとパディングを調整)
+    levels = np.arange(0, 200 + 1, 20)
+    cbar = fig.colorbar(surface, ax=ax, shrink=0.5, aspect=15, pad=0.15, label='Z value')
+    # カラーバーの目盛りを設定
     cbar.set_ticks(levels)
     # カラーバーの目盛りを外向きに設定
     cbar.ax.tick_params(direction='out')
@@ -79,26 +72,28 @@ def main():
     # 各種名称設定
     ax.set_xlabel("X軸")
     ax.set_ylabel("Y軸")
+    ax.set_zlabel("Z軸", rotation=90)
     # タイトルに数式を反映
-    ax.set_title(rf'$Z = {equation_latex}$')  # LaTeX形式で数式を表示
+    ax.set_title(rf'$z = {equation_latex}$')  # LaTeX形式で数式を表示
 
     # 軸メモリ設定
     xTicksOffset = 2
     yTicksOffset = 2
+    zTicksOffset = 20
 
     ax.set_xticks(np.arange(xMin, xMax + 1, xTicksOffset))  # X軸メモリ刻み
     ax.set_yticks(np.arange(yMin, yMax + 1, yTicksOffset))  # Y軸メモリ刻み
+    ax.set_zticks(np.arange(zMin, zMax + 1, zTicksOffset))  # Z軸メモリ刻み
+
     ax.set_xlim(xMin, xMax)                                 # X軸表示範囲
     ax.set_ylim(yMin, yMax)                                 # Y軸表示範囲
-
-    # 等高線にラベルを追加
-    ax.clabel(contour, inline=True, fontsize=8, fmt='%1.0f')  # 等高線ラベルを追加
+    ax.set_zlim(zMin, zMax)                                 # Z軸表示範囲
 
     # レイアウトを調整
     fig.tight_layout()
 
     # グラフ出力
-    plt.savefig("./ColorAndContourMapPlotter2.pdf", bbox_inches="tight", pad_inches=0.05)
+    plt.savefig("./3DColorMapPlotter.pdf", bbox_inches="tight", pad_inches=0.05)
     plt.show()
 
 if __name__ == "__main__":

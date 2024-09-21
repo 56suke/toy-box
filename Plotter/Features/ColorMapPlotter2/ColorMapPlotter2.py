@@ -51,6 +51,9 @@ def main():
     # LaTeXで使える形に変換: **2 を ^2 に置き換える
     equation_latex = equation.replace("**2", "^2")
 
+    # 等高線のレベルを指定 (等間隔のレベル)
+    levels = np.arange(0, 200 + 1, 20)  # 0から200まで20刻み
+
     # オブジェクト生成 (inch -> cm 変換)
     cm = 1 / 2.54
     fig, ax = plt.subplots(figsize=(12*cm, 12*cm))
@@ -64,16 +67,17 @@ def main():
     cbar = fig.colorbar(c, cax=cax, orientation='horizontal')
     cbar.set_label('Z value')
 
-    # カラーバーの目盛りをカスタマイズ
-    ticks = np.linspace(Z.min(), Z.max(), num=9)
-    cbar.set_ticks(ticks)
+    # カラーバーの目盛りを等高線レベルに一致させる
+    cbar.set_ticks(levels)
+    # カラーバーの目盛りを外向きに設定
+    cbar.ax.tick_params(direction='out')
 
     #--- 書式設定・出力設定 ---#
     # 各種名称設定
     ax.set_xlabel("X軸")
     ax.set_ylabel("Y軸")
     # タイトルに数式を反映
-    ax.set_title(rf'$z = {equation_latex}$')  # LaTeX形式で数式を表示
+    ax.set_title(rf'$Z = {equation_latex}$')  # LaTeX形式で数式を表示
 
     # 軸メモリ設定
     xTicksOffset = 2
