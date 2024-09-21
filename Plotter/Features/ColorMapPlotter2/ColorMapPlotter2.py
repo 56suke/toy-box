@@ -44,8 +44,12 @@ def main():
     y = np.linspace(yMin, yMax, 400)
     X, Y = np.meshgrid(x, y)
 
-    # 2次関数の定義
-    Z = X**2 + Y**2
+    # 数式の定義 (文字列として数式を定義)
+    equation = "X**2 + Y**2"  # 任意の式をここで指定
+    Z = eval(equation, {"X": X, "Y": Y})  # evalで式を評価し、Zを計算
+
+    # LaTeXで使える形に変換: **2 を ^2 に置き換える
+    equation_latex = equation.replace("**2", "^2")
 
     # オブジェクト生成 (inch -> cm 変換)
     cm = 1 / 2.54
@@ -68,7 +72,8 @@ def main():
     # 各種名称設定
     ax.set_xlabel("X軸")
     ax.set_ylabel("Y軸")
-    ax.set_title(r'$z = x^2 + y^2$')
+    # タイトルに数式を反映
+    ax.set_title(rf'$z = {equation_latex}$')  # LaTeX形式で数式を表示
 
     # 軸メモリ設定
     xTicksOffset = 2
