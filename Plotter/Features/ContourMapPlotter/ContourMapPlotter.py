@@ -2,7 +2,7 @@
 # coding: utf-8
 
 ###
-# /* ColorMapPlotter.py */
+# /* ContourMapPlotter.py */
 # 
 # 
 ###
@@ -51,28 +51,32 @@ def main():
     # LaTeXで使える形に変換: **2 を ^2 に置き換える
     equation_latex = equation.replace("**2", "^2")
 
-    # 等高線のレベルを指定 (等間隔のレベル)
-    levels = np.arange(0, 200 + 1, 20)  # 0から200まで20刻み
-
     # オブジェクト生成 (inch -> cm 変換)
     cm = 1 / 2.54
-    fig, ax = plt.subplots(figsize=(12*cm, 12*cm))
+    fig, ax = plt.subplots(figsize=(14*cm, 12*cm))
 
-    # 2次関数のカラーマップ表示
-    c = ax.imshow(Z, extent=[xMin, xMax, yMin, yMax], origin='lower', cmap='turbo')
+    # 等高線のレベルを指定
+    levels = np.arange(0, 200 + 1, 20)  # 0から200までの刻み
 
-    # カラーバーの追加 (AxesDividerを使用して調整)
+    # 等高線のプロット
+    c = ax.contour(X, Y, Z, levels=levels, cmap='turbo', corner_mask=False)
+
+    # 等高線ラベルを追加
+    ax.clabel(c, inline=True)
+
+    # カラーバーの追加
     divider = make_axes_locatable(ax)
-    cax = divider.append_axes("right", size="5%", pad=0.1)  # カラーバーの位置とサイズを調整
-    cbar = fig.colorbar(c, cax=cax, label='Z value')
+    cax = divider.append_axes("right", size="5%", pad=0.1)
 
-    # カラーバーの目盛りを等高線レベルに一致させる
-    cbar.set_ticks(levels)
+    # カラーバーを等高線と一致させるために、カラーバーの目盛りを等高線のレベルに設定
+    cbar = fig.colorbar(c, cax=cax, ticks=levels)
+    cbar.set_label('Z value')
 
     #--- 書式設定・出力設定 ---#
     # 各種名称設定
     ax.set_xlabel("X軸")
     ax.set_ylabel("Y軸")
+    
     # タイトルに数式を反映
     ax.set_title(rf'$z = {equation_latex}$')  # LaTeX形式で数式を表示
 
@@ -89,7 +93,7 @@ def main():
     fig.tight_layout()
 
     # グラフ出力
-    plt.savefig("./ColorMapPlotter.pdf", bbox_inches="tight", pad_inches=0.05)
+    plt.savefig("./ContourMapPlotter.pdf", bbox_inches="tight", pad_inches=0.05)
     plt.show()
 
 if __name__ == "__main__":
