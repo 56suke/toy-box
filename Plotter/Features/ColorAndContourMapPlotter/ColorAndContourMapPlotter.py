@@ -71,13 +71,15 @@ def main():
 
     # カラーバーの目盛りを等高線レベルに一致させる
     cbar.set_ticks(levels)
+    # カラーバーの目盛りを外向きに設定
+    cbar.ax.tick_params(direction='out')
 
     #--- 書式設定・出力設定 ---#
     # 各種名称設定
     ax.set_xlabel("X軸")
     ax.set_ylabel("Y軸")
     # タイトルに数式を反映
-    ax.set_title(rf'$z = {equation_latex}$')  # LaTeX形式で数式を表示
+    ax.set_title(rf'$Z = {equation_latex}$')  # LaTeX形式で数式を表示
 
     # 軸メモリ設定
     xTicksOffset = 2
