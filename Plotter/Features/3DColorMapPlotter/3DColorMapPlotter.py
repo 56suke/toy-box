@@ -93,7 +93,9 @@ def main():
     fig.tight_layout()
 
     # グラフ出力
-    plt.savefig("./3DColorMapPlotter.pdf", bbox_inches="tight", pad_inches=0.05)
+    _, dirPath = FileManager.GetExecPath(__file__)
+    outputPath = os.path.join(dirPath, "3DColorMapPlotter.pdf")
+    plt.savefig(outputPath, bbox_inches="tight", pad_inches=0.05)
     plt.show()
 
 if __name__ == "__main__":

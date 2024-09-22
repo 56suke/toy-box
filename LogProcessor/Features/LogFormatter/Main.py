@@ -39,8 +39,7 @@ def main():
     #--- 変数宣言 ---#
 
     #--- 実行ファイルパスを取得 ---#
-    exeFilePath = FileManager.GetExecFilePath(__file__)
-    exeFileDir = os.path.dirname(exeFilePath)
+    _, exeFileDir = FileManager.GetExecPath(__file__)
     inputFilePath = os.path.join(exeFileDir, INPUT_FILE_NAME)
 
     #--- ファイル統合処理 ---#
