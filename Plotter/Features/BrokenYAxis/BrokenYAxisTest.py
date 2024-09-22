@@ -28,8 +28,7 @@ def main():
 
     #--- 変数宣言 ---#
     inputFile = 'Log.csv'
-    exeFilePath = FileManager.GetExecFilePath(__file__)
-    exeFileDir = os.path.dirname(exeFilePath)
+    _, exeFileDir = FileManager.GetExecPath(__file__)
     inputFilePath = os.path.join(exeFileDir, inputFile)
 
     inputData = FileReadWriter.ReadCsvFile(inputFilePath, True)
@@ -112,7 +111,8 @@ def main():
     fig.subplots_adjust(hspace=0.2)  # hspaceを小さくして間隔を狭める
 
     # グラフ出力
-    plt.savefig("./BrokenYAxisTest.pdf", bbox_inches="tight", pad_inches=0.005)
+    outputPath = os.path.join(exeFileDir, "BrokenYAxisTest.pdf")
+    plt.savefig(outputPath, bbox_inches="tight", pad_inches=0.005)
     plt.show()
 
 if __name__ == "__main__":

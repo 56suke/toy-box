@@ -18,18 +18,19 @@ curScript = sys.argv[0]
 DATE_FORMAT = '%Y/%m/%d %H:%M:%S.%f'
 
 
-#--- 実行ファイルパス(絶対パス)を取得 ---#
-def GetExecFilePath(filePath):
+#--- 実行ファイル及びディレクトリパス(絶対パス)を取得 ---#
+def GetExecPath(filePath):
     # PyInstallerが生成した一時フォルダ内で実行されている場合
-    # sys.executableが実行可能ファイルパスを返却
+    # sys.executableが実行可能ファイル及びディレクトリパスを返却
     if getattr(sys, 'frozen', False):
-        execPath = os.path.abspath(sys.executable)
+        execFilePath    = os.path.abspath(sys.executable)
+        execDirPath     = os.path.dirname(execFilePath)
     # スクリプトが直接Pythonインタプリタで実行されている場合
-    # 通常のPythonスクリプトとして実行されている場合のファイルパス
+    # 通常のPythonスクリプトとして実行されている場合のファイル及びディレクトリパス
     else:
-        execPath = os.path.abspath(filePath)
-    return execPath
-
+        execFilePath = os.path.abspath(filePath)
+        execDirPath     = os.path.dirname(execFilePath)
+    return execFilePath, execDirPath
 
 #--- 指定ディレクトリ内に指定拡張子のファイルがあるのかチェックする ---#
 def GetFilesList(dirPath, extension):

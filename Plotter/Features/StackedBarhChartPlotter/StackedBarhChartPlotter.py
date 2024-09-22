@@ -28,8 +28,7 @@ def main():
 
     #--- 変数宣言 ---#
     inputFile = 'Precipitation.csv'
-    exeFilePath = FileManager.GetExecFilePath(__file__)
-    exeFileDir = os.path.dirname(exeFilePath)
+    _, exeFileDir = FileManager.GetExecPath(__file__)
     inputFilePath = os.path.join(exeFileDir, inputFile)
 
     inputData   = FileReadWriter.ReadCsvFile(inputFilePath, True)
@@ -137,7 +136,8 @@ def main():
     fig.tight_layout()
 
     # グラフ出力
-    plt.savefig("./StackedBarhChartPlotter.pdf", bbox_inches="tight", pad_inches=0.05)
+    outputPath = os.path.join(exeFileDir, "StackedBarhChartPlotter.pdf")
+    plt.savefig(outputPath, bbox_inches="tight", pad_inches=0.05)
     plt.show()
 
 if __name__ == "__main__":
