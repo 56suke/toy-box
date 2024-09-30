@@ -70,6 +70,19 @@ def ReadCsvFile(inputFile, headerSkip=False, encode='utf-8'):
             data.append(row)
     return data
 
+#--- .csv(csv)ファイル出力 ---#
+# data:出力データ
+# outputFile:出力'.csvファイル'(.csvファイルまでのパス)
+def WriteCsvFile(data, outputFile, encode='utf-8'):
+    #--- 変数宣言 ---#
+
+    #--- tsvファイル出力 ---#
+    with open(outputFile, 'w', encoding=encode, newline='') as file:
+        writer = csv.writer(file)
+
+        # 各業のデータをCSVファイルに書込
+        for row in data:
+            writer.writerow(row)
 
 #--- .tsvファイル読込 ---#
 # inputFile:入力'.tsvファイル'(.tsvファイルまでのパス)
