@@ -2,7 +2,7 @@
 # coding: utf-8
 
 ###
-# /* ViolinPlotter.py */
+# /* BoxAndWhiskerPlotter.py */
 # 
 # 
 ###
@@ -80,49 +80,9 @@ def main():
     for i in range(1, len(data)):
         positions.append(positions[i-1] + increment)  # 前のポジションに倍率をかけて次の位置を決める
 
-    # バイオリンプロットの描画
-    parts = ax.violinplot(data, positions=positions, showmeans=True, showextrema=True, showmedians=False)
+    # 箱ひげ図の描画
+    ax.boxplot(data, positions=positions, showmeans=True, meanline=True, patch_artist=False)  # patch_artistをFalseに設定
 
-    #--- 各バイオリンの色を設定 ---#
-    colors = ['tab:blue', 'tab:orange', 'tab:green']
-    for i, pc in enumerate(parts['bodies']):
-        pc.set_facecolor(colors[i]) # 各バイオリンの塗りつぶし色を設定
-        #pc.set_edgecolor('black')  # 外枠の色を黒に設定
-
-    # 平均値の色を設定
-    parts['cmeans'].set_color('C1')  # 平均値の線の色を設定
-
-    #--- 四分位数・平均値を描画 ---#
-    for i, dataset in enumerate(data):
-        q1 = np.percentile(dataset, 25)  # 第1四分位数
-        q2 = np.percentile(dataset, 50)  # 中央値
-        q3 = np.percentile(dataset, 75)  # 第3四分位数
-        mean = np.mean(dataset)  # 平均値
-
-        # バイオリンプロットの頂点データ（x, y座標）を取得
-        vertices = parts['bodies'][i].get_paths()[0].vertices
-        x_data = vertices[:, 0]
-        y_data = vertices[:, 1]
-
-        # 特定の四分位数に対応するx座標の範囲を取得する関数
-        def get_violin_width_at_quantile(quantile_value):
-            idx = np.abs(y_data - quantile_value).argmin()  # 最も近いy値のインデックスを取得
-            x_min = x_data[idx]  # 対応するxの最小値
-            x_max = x_data[-(idx + 1)]  # 対応するxの最大値
-            return x_min, x_max
-
-        # 四分位数や平均値のx範囲を取得
-        q1_xmin, q1_xmax = get_violin_width_at_quantile(q1)
-        q2_xmin, q2_xmax = get_violin_width_at_quantile(q2)
-        q3_xmin, q3_xmax = get_violin_width_at_quantile(q3)
-        mean_xmin, mean_xmax = get_violin_width_at_quantile(mean)
-
-        # 四分位数や平均値の線を描画
-        ax.hlines(q1, xmin=q1_xmin, xmax=q1_xmax, colors='black', linestyles='dotted')  # 第1四分位数
-        ax.hlines(q2, xmin=q2_xmin, xmax=q2_xmax, colors='black', linestyles='dashed')  # 中央値
-        ax.hlines(q3, xmin=q3_xmin, xmax=q3_xmax, colors='black', linestyles='dotted')  # 第3四分位数
-        ax.hlines(mean, xmin=mean_xmin, xmax=mean_xmax, colors='tab:orange', linestyles='solid')  # 平均値
-    
     #--- 書式設定・出力設定 ---#
     # 目盛線, 補助線
     ax.grid(which = 'major', axis='y', linestyle = 'dashed')    # grid線表示設定
@@ -133,20 +93,20 @@ def main():
     ax.set_ylabel("Weight")                         # Y軸ラベル名称
 
     # 軸メモリ設定
-    yMin = 40
-    yMax = 120
-    yTicksOffset = 10
+    yMin = 0
+    yMax = 180
+    yTicksOffset = 20
 
     ax.set_xticks(positions)                                    # X軸ラベルの位置
     ax.set_xticklabels(["Male", "Female", "Dummy"])             # X軸ラベル名称
     ax.set_yticks(np.arange(yMin, yMax + 0.01, yTicksOffset))   # Y軸メモリ刻み
-    ax.set_ylim(yMin, yMax)                                        # Y軸範囲設定
+    ax.set_ylim(yMin, yMax)                                     # Y軸範囲設定
     
     # レイアウトを調整
     fig.tight_layout()
 
     # グラフ出力
-    outputPath = os.path.join(exeFileDir, "ViolinPlotter.pdf")
+    outputPath = os.path.join(exeFileDir, "BoxAndWhiskerPlotter.pdf")
     plt.savefig(outputPath, bbox_inches="tight", pad_inches=0.05)
     plt.show()
 
