@@ -56,7 +56,8 @@ def WriteTxtFile(dataList, outputFile):
 # headerSkip:ヘッダを読み飛ばすかどうかを判定するフラグ default:False
 def ReadCsvFile(inputFile, headerSkip=False, encode='utf-8'):
     #--- 変数宣言 ---#
-    data = []
+    data    = []
+    headStr = []
 
     #--- .csvファイルの中身をリストとして取得 ---#
     with open(inputFile, 'r', encoding=encode, newline='') as file:
@@ -65,10 +66,17 @@ def ReadCsvFile(inputFile, headerSkip=False, encode='utf-8'):
         # ヘッダ行の読み飛ばし処理
         if (headerSkip == True):
             next(reader)
+        # ヘッダ文字列をバッファに詰める
+        else:
+            headStr = next(reader)
+            
+            # ゼロ幅スペース('\ufeff')を空文字''へ
+            headStr = [label.replace('\ufeff', '') for label in headStr]
         
         for row in reader:
             data.append(row)
-    return data
+            
+    return data, headStr
 
 #--- .csv(csv)ファイル出力 ---#
 # data:出力データ

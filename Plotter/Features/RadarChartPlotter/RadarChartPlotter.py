@@ -88,7 +88,7 @@ def main():
     aScore = []
     bScore = []
 
-    for data in inputData:
+    for data in inputData[0]:
         if data[0] == 'A':
             aScore = list(map(int, data[1:]))  # Aさんのスコア
         elif data[0] == 'B':

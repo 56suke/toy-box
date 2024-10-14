@@ -35,7 +35,7 @@ def main():
     time    = []
     i_A     = []
 
-    for data in inputData:
+    for data in inputData[0]:
         time.append(float(data[6]))
         i_A.append(float(data[3]))
 

@@ -42,7 +42,7 @@ def main():
     # 最初のイベントの時刻を基準にするための変数
     baseTime = None
 
-    for data in inputData:
+    for data in inputData[0]:
         date.append(data[0])
         time.append(data[1])
         eventName.append(data[2])

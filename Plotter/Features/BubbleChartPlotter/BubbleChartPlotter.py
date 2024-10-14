@@ -36,7 +36,7 @@ def main():
     sales           = []
     profitMargin    = []
 
-    for data in inputData:
+    for data in inputData[0]:
         price.append(float(data[0]))
         sales.append(float(data[1]))
         profitMargin.append(float(data[2]))

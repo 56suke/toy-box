@@ -45,7 +45,7 @@ def main():
     hakata      = []
     naha        = []
 
-    for data in inputData:
+    for data in inputData[0]:
         date.append(data[0])
         kyoto.append(float(data[1]))
         sapporo.append(float(data[2]))
