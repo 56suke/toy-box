@@ -41,7 +41,7 @@ def main():
     fHeight = []
     fBmi    = []
 
-    for data in inputData:
+    for data in inputData[0]:
         if (data[5] == 'Male'):
             mAge.append(int(data[6]))
             mWeight.append(float(data[0]))
