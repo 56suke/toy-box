@@ -71,6 +71,7 @@ def main():
                 bins=40,
                 #edgecolor='black',
                 label='mWeight',
+                alpha=0.7
                 )
     
     #--- 書式設定・出力設定 ---#
@@ -89,8 +90,8 @@ def main():
     xMax = 110
     yMin = 0
     yMax = 100
-    xTicksOffset = 10
-    yTicksOffset = 20
+    xTicksOffset = 5
+    yTicksOffset = 10
 
     ax.set_xticks(np.arange(xMin, xMax + 1, xTicksOffset))  # X軸メモリ刻み
     ax.set_yticks(np.arange(yMin, yMax + 1, yTicksOffset))  # Y軸メモリ刻み
