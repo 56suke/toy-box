@@ -65,7 +65,7 @@ def main():
     #--- オブジェクト生成 ---#
     # inch -> cm 変換式
     cm = 1 / 2.54
-    fig, ax = plt.subplots(figsize=(18*cm, 12*cm))
+    fig, ax = plt.subplots(figsize=(18*cm, 14*cm))
 
     # 各イベントのバーを描画
     for i in range(len(eventName)):
@@ -85,15 +85,18 @@ def main():
     ax.set_xlabel("Elapsed Time [sec]") # X軸ラベル名称
     ax.set_ylabel("Event Name")              # Y軸ラベル名称
 
-    # y軸の順序を反転
-    ax.invert_yaxis()
-
     # 軸メモリ設定
     xMin = 0
     xMax = 50
     xTicksOffset = 2
     ax.set_xticks(np.arange(xMin, xMax + 1, xTicksOffset))  # X軸メモリ刻み
     ax.set_xlim(xMin, xMax)                                 # X軸表示範囲
+
+    # Y軸方向の余白を減らすための調整
+    ax.margins(y=0.02)  # Y方向の余白を減らす
+
+    # y軸の順序を反転
+    ax.invert_yaxis()
 
     # レイアウトを調整
     fig.tight_layout()
