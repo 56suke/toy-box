@@ -165,17 +165,21 @@ def WriteTabSprDataToExcelFile(data, outputFile):
 
 #--- Excelファイルの読込 ---#
 # inputFile:入力'*.xlsx'ファイル(*.xlsxまでのパス)
-def ReadExcel(inputFile):
+def ReadExcel(inputFile, headerSkip=False):
     #--- 変数宣言 ---#
-
     wb = load_workbook(filename=inputFile, read_only=True)
     ws = wb.active
     listData = []
 
-    for row in ws.iter_rows(values_only=True):
+    # --- データの読み込み --- #
+    for i, row in enumerate(ws.iter_rows(values_only=True)):
+        if headerSkip and i == 0:
+            # headerskipが有効で最初の行の場合、ヘッダ文字列を格納
+            headStr = row
+            continue
         listData.append(row)
 
-    return listData
+    return listData, headStr
 
 
 #--- 各行のIndex値も込みでExcelファイル読込 ---#

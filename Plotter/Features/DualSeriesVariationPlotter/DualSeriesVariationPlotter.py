@@ -1,0 +1,149 @@
+#!/usr/local/bin/python3
+# coding: utf-8
+
+###
+# /* DualSeriesVariationPlotter.py */
+# 
+# 
+###
+
+#--- モジュールのインポート ---#
+import sys
+import os
+import matplotlib.pyplot as plt
+import numpy as np
+from datetime import datetime
+
+# プロジェクトのルートディレクトリをsys.pathに追加
+#sys.path.append(os.path.join(os.path.dirname(__file__), '../../../'))
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
+
+#--- 自作モジュールのインポート ---#
+from Utility import FileReadWriter, ExcelFileFormatter, FileManager, DataManager
+
+#--- 変数宣言 ---#
+curScript = sys.argv[0]
+
+#--- main関数 ---#
+def main():
+
+    #--- 変数宣言 ---#
+    inputFile = 'Data.xlsx'
+    _, exeFileDir = FileManager.GetExecPath(__file__)
+    inputFilePath = os.path.join(exeFileDir, inputFile)
+
+    inputData = FileReadWriter.ReadExcel(inputFilePath, headerSkip=True)
+    date        = []
+    weight      = []
+    bFatPer     = []
+
+    for data in inputData[0]:
+        # 日付データの変換
+        raw_date = data[0]  # 例: "2025-01-03 00:00:00"
+        #formatted_date = raw_date.strftime("%y-%m-%d")
+        formatted_date = raw_date.strftime("%m-%d")
+        date.append(formatted_date)  # フォーマット済みの日付を追加
+
+        weight.append(float(data[1]))
+        bFatPer.append(float(data[2]))
+    
+    #--- rcParams設定 ---#
+    plt.rcParams['axes.axisbelow']  = True   # grid線を後ろに
+    plt.rcParams['xtick.direction'] = 'out'
+    plt.rcParams['ytick.direction'] = 'out'
+    plt.rcParams['font.family']     = 'Meiryo'
+
+    #--- オブジェクト生成 ---#
+    # inch -> cm 変換式
+    cm = 1 / 2.54
+    fig, ax = plt.subplots(figsize=(14*cm, 10*cm))
+    
+    #--- グラフの描画設定 ---#
+    ax.plot(
+            date,               # x軸値
+            weight,             # y軸値
+            marker='o',         # 点の種類
+            markersize='5',     # 点の大きさ
+            linestyle='--',     # 線の種類
+            linewidth=1,        # 線の太さ
+            label = "DataX"   # ラベル
+            )
+    
+    # 各データポイントに値を表示
+    for i in range(len(date)):
+        ax.text(
+            date[i], weight[i] + 0.2, f'{weight[i]:.1f}', fontsize=7, color='black',
+            ha='center', va='bottom'  # 中央揃えで少し上に表示
+        )
+    
+    #--- Y2軸の設定 (体脂肪率) ---#
+    ax2 = ax.twinx()  # 2つ目のY軸を生成
+    ax2.plot(
+            date,               # x軸値
+            bFatPer,            # y軸値
+            marker='s',         # 点の種類
+            markersize='5',     # 点の大きさ
+            linestyle='--',      # 線の種類
+            linewidth=1,        # 線の太さ
+            label="DataY", # ラベル
+            color='tab:orange'
+            )
+
+    # 各データポイントに値を表示 (体脂肪率)
+    for i in range(len(date)):
+        ax2.text(
+            date[i], bFatPer[i] + 0.2, f'{bFatPer[i]:.1f}', fontsize=7, color='black',
+            ha='center', va='bottom'  # 中央揃えで少し上に表示
+        )
+    
+    #--- 書式設定・出力設定 ---#
+    # 目盛線, 補助線
+    ax.grid(which = 'major', linestyle = 'dashed')      # grid線表示設定
+    #plt.minorticks_on()                                # 補助目盛線表示
+    #ax.grid(which = 'minor', linestyle = 'dotted')     # grid線表示設定
+
+    # 各種名称設定
+    ax.set_title("DataXとDataYの推移", fontweight='bold') # グラフタイトル名称
+    ax.set_xlabel("月日")                               # X軸ラベル名称
+    ax.set_xticks(range(len(date)))                     # 目盛り位置を設定
+    ax.set_xticklabels(date, rotation=90)               # X軸ラベル回転
+    ax.set_ylabel("DataX")                           # Y軸ラベル名称
+    ax2.set_ylabel("DataY")                       # Y2軸ラベル名称
+
+    # 軸メモリ設定
+    yMin = 66
+    yMax = 80
+    yTicksOffset = 1
+
+    ax.set_yticks(np.arange(yMin, yMax + 1, yTicksOffset))  # Y軸メモリ刻み
+    ax.set_ylim(yMin, yMax)                                 # Y軸表示範囲
+
+    yMin2, yMax2 = 16, 30
+    yTicksOffset2 = 1
+    ax2.set_yticks(np.arange(yMin2, yMax2 + 1, yTicksOffset2))  # Y2軸メモリ刻み
+    ax2.set_ylim(yMin2, yMax2)                                 # Y2軸表示範囲
+    
+    # 凡例設定
+    # 凡例を1つにまとめて設定
+    fig.legend(
+                handles=ax.get_legend_handles_labels()[0] + ax2.get_legend_handles_labels()[0],
+                labels=ax.get_legend_handles_labels()[1] + ax2.get_legend_handles_labels()[1],
+                loc='upper center',
+                ncol=2,
+                markerscale=1, 
+                columnspacing=2, 
+                handletextpad=0.5, 
+                frameon=False,
+                bbox_to_anchor=(0.5, 0.06)  # 凡例の位置を調整
+              )
+    
+    # レイアウトを調整
+    fig.tight_layout()
+
+    # グラフ出力
+    outputPath = os.path.join(exeFileDir, "DualSeriesVariationPlotter.pdf")
+    plt.savefig(outputPath, bbox_inches="tight", pad_inches=0.05)
+    plt.show()
+
+if __name__ == "__main__":
+    main()
