@@ -129,7 +129,7 @@ def main():
     fig.tight_layout()
 
     # グラフ出力
-    outputPath = os.path.join(exeFileDir, "BarChartPlotter.pdf")
+    outputPath = os.path.join(exeFileDir, "BarhChartPlotter.pdf")
     plt.savefig(outputPath, bbox_inches="tight", pad_inches=0.05)
     plt.show()
 
