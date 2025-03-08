@@ -28,7 +28,7 @@ curScript = sys.argv[0]
 def main():
 
     #--- 変数宣言 ---#
-    inputFile = 'FilePath'
+    inputFile = 'Data.xlsx'
     _, exeFileDir = FileManager.GetExecPath(__file__)
     inputFilePath = os.path.join(exeFileDir, inputFile)
 
@@ -74,7 +74,7 @@ def main():
     # 各データポイントに値を表示
     for i in range(len(date)):
         ax.text(
-            date[i], weight[i] + 0.2, f'{weight[i]:.1f}', fontsize=5, color='black',
+            date[i], weight[i] + 0.2, f'{weight[i]:.1f}', fontsize=7, color='black',
             ha='center', va='bottom'  # 中央揃えで少し上に表示
         )
     
