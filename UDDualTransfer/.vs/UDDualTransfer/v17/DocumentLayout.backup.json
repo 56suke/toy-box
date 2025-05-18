@@ -1,0 +1,84 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Gorosuke\\Desktop\\C#\\UDDualTransfer\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{B1F43FE0-8E2D-4AAE-88BD-D0FC05405F47}|UDDualTransfer\\UDDualTransfer.csproj|c:\\users\\gorosuke\\desktop\\c#\\uddualtransfer\\uddualtransfer\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B1F43FE0-8E2D-4AAE-88BD-D0FC05405F47}|UDDualTransfer\\UDDualTransfer.csproj|solutionrelative:uddualtransfer\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B1F43FE0-8E2D-4AAE-88BD-D0FC05405F47}|UDDualTransfer\\UDDualTransfer.csproj|C:\\Users\\Gorosuke\\Desktop\\C#\\UDDualTransfer\\uddualtransfer\\settingsmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B1F43FE0-8E2D-4AAE-88BD-D0FC05405F47}|UDDualTransfer\\UDDualTransfer.csproj|solutionrelative:uddualtransfer\\settingsmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B1F43FE0-8E2D-4AAE-88BD-D0FC05405F47}|UDDualTransfer\\UDDualTransfer.csproj|C:\\Users\\Gorosuke\\Desktop\\C#\\UDDualTransfer\\uddualtransfer\\appsettings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B1F43FE0-8E2D-4AAE-88BD-D0FC05405F47}|UDDualTransfer\\UDDualTransfer.csproj|solutionrelative:uddualtransfer\\appsettings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B1F43FE0-8E2D-4AAE-88BD-D0FC05405F47}|UDDualTransfer\\UDDualTransfer.csproj|C:\\Users\\Gorosuke\\Desktop\\C#\\UDDualTransfer\\uddualtransfer\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{B1F43FE0-8E2D-4AAE-88BD-D0FC05405F47}|UDDualTransfer\\UDDualTransfer.csproj|solutionrelative:uddualtransfer\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 301,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "SettingsManager.cs",
+              "DocumentMoniker": "C:\\Users\\Gorosuke\\Desktop\\C#\\UDDualTransfer\\UDDualTransfer\\SettingsManager.cs",
+              "RelativeDocumentMoniker": "UDDualTransfer\\SettingsManager.cs",
+              "ToolTip": "C:\\Users\\Gorosuke\\Desktop\\C#\\UDDualTransfer\\UDDualTransfer\\SettingsManager.cs",
+              "RelativeToolTip": "UDDualTransfer\\SettingsManager.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-15T14:10:03.392Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Form1.cs",
+              "DocumentMoniker": "C:\\Users\\Gorosuke\\Desktop\\C#\\UDDualTransfer\\UDDualTransfer\\Form1.cs",
+              "RelativeDocumentMoniker": "UDDualTransfer\\Form1.cs",
+              "ToolTip": "C:\\Users\\Gorosuke\\Desktop\\C#\\UDDualTransfer\\UDDualTransfer\\Form1.cs",
+              "RelativeToolTip": "UDDualTransfer\\Form1.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAqwBcAAAA8AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-15T13:50:24.967Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "AppSettings.cs",
+              "DocumentMoniker": "C:\\Users\\Gorosuke\\Desktop\\C#\\UDDualTransfer\\UDDualTransfer\\AppSettings.cs",
+              "RelativeDocumentMoniker": "UDDualTransfer\\AppSettings.cs",
+              "ToolTip": "C:\\Users\\Gorosuke\\Desktop\\C#\\UDDualTransfer\\UDDualTransfer\\AppSettings.cs",
+              "RelativeToolTip": "UDDualTransfer\\AppSettings.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAGAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-14T14:22:23.133Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Form1.cs [\u30C7\u30B6\u30A4\u30F3]",
+              "DocumentMoniker": "C:\\Users\\Gorosuke\\Desktop\\C#\\UDDualTransfer\\UDDualTransfer\\Form1.cs",
+              "RelativeDocumentMoniker": "UDDualTransfer\\Form1.cs",
+              "ToolTip": "C:\\Users\\Gorosuke\\Desktop\\C#\\UDDualTransfer\\UDDualTransfer\\Form1.cs [\u30C7\u30B6\u30A4\u30F3]",
+              "RelativeToolTip": "UDDualTransfer\\Form1.cs [\u30C7\u30B6\u30A4\u30F3]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-14T14:17:45.069Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

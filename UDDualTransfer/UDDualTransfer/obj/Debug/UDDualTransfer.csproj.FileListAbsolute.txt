@@ -1,0 +1,17 @@
+C:\Users\Gorosuke\Desktop\C#\UDDualTransfer\UDDualTransfer\obj\Debug\UDDualTransfer.csproj.AssemblyReference.cache
+C:\Users\Gorosuke\Desktop\C#\UDDualTransfer\UDDualTransfer\obj\Debug\Sample.UDDualTransfer.resources
+C:\Users\Gorosuke\Desktop\C#\UDDualTransfer\UDDualTransfer\obj\Debug\UDDualTransfer.Properties.Resources.resources
+C:\Users\Gorosuke\Desktop\C#\UDDualTransfer\UDDualTransfer\obj\Debug\UDDualTransfer.csproj.GenerateResource.cache
+C:\Users\Gorosuke\Desktop\C#\UDDualTransfer\UDDualTransfer\obj\Debug\UDDualTransfer.csproj.CoreCompileInputs.cache
+C:\Users\Gorosuke\Desktop\C#\UDDualTransfer\UDDualTransfer\bin\Debug\UDDualTransfer.exe.config
+C:\Users\Gorosuke\Desktop\C#\UDDualTransfer\UDDualTransfer\bin\Debug\UDDualTransfer.exe
+C:\Users\Gorosuke\Desktop\C#\UDDualTransfer\UDDualTransfer\bin\Debug\UDDualTransfer.pdb
+C:\Users\Gorosuke\Desktop\C#\UDDualTransfer\UDDualTransfer\bin\Debug\Microsoft.WindowsAPICodePack.dll
+C:\Users\Gorosuke\Desktop\C#\UDDualTransfer\UDDualTransfer\bin\Debug\Microsoft.WindowsAPICodePack.Shell.dll
+C:\Users\Gorosuke\Desktop\C#\UDDualTransfer\UDDualTransfer\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Gorosuke\Desktop\C#\UDDualTransfer\UDDualTransfer\bin\Debug\Microsoft.WindowsAPICodePack.xml
+C:\Users\Gorosuke\Desktop\C#\UDDualTransfer\UDDualTransfer\bin\Debug\Microsoft.WindowsAPICodePack.Shell.xml
+C:\Users\Gorosuke\Desktop\C#\UDDualTransfer\UDDualTransfer\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Gorosuke\Desktop\C#\UDDualTransfer\UDDualTransfer\obj\Debug\UDDualTr.09B640BD.Up2Date
+C:\Users\Gorosuke\Desktop\C#\UDDualTransfer\UDDualTransfer\obj\Debug\UDDualTransfer.exe
+C:\Users\Gorosuke\Desktop\C#\UDDualTransfer\UDDualTransfer\obj\Debug\UDDualTransfer.pdb
